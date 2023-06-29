@@ -2,7 +2,9 @@ package com.sparta.spartaboard.controller;
 
 import com.sparta.spartaboard.domain.dto.PostRequestDto;
 import com.sparta.spartaboard.domain.dto.PostResponseDto;
+import com.sparta.spartaboard.domain.entity.User;
 import com.sparta.spartaboard.service.PostService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,9 @@ public class PostController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto) {
-        return postService.createPost(postRequestDto);
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, HttpServletRequest req) {
+        User user = (User) req.getAttribute("user");
+        return postService.createPost(postRequestDto, user);
     }
 
     @GetMapping("/post/{id}")
@@ -33,12 +36,14 @@ public class PostController {
     }
 
     @PutMapping("/post/{id}")
-    public ResponseEntity<PostResponseDto> editPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
-        return postService.editPost(id, postRequestDto);
+    public ResponseEntity<PostResponseDto> editPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, HttpServletRequest req) {
+        User user = (User) req.getAttribute("user");
+        return postService.editPost(id, postRequestDto, user);
     }
 
     @DeleteMapping("/post/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
-        return postService.deletePost(id, postRequestDto);
+    public ResponseEntity<String> deletePost(@PathVariable Long id, HttpServletRequest req) {
+        User user = (User) req.getAttribute("user");
+        return postService.deletePost(id, user);
     }
 }

@@ -23,8 +23,9 @@ public class Post extends TimeStamped {
     private String contents;
 
     @Builder
-    public Post(String title, String writer, String password, String contents){
+    public Post(String title, User user, String contents){
         this.title = title;
+        this.user = user;
         this.contents = contents;
     }
 
