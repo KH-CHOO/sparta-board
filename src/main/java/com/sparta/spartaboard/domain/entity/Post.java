@@ -16,24 +16,20 @@ public class Post extends TimeStamped {
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "writer", nullable = false)
-    private String writer;
-    @Column(name = "password", nullable = false)
-    private String password;
+    @ManyToOne
+    @JoinColumn(name="username")
+    private User user;
     @Column(name = "contents", nullable = false, length = 500)
     private String contents;
 
     @Builder
     public Post(String title, String writer, String password, String contents){
         this.title = title;
-        this.writer = writer;
-        this.password = password;
         this.contents = contents;
     }
 
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
-        this.writer = postRequestDto.getWriter();
         this.contents = postRequestDto.getContents();
     }
 }
