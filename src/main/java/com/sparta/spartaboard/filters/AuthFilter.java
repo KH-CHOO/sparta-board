@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j(topic = "AuthFilter")
@@ -41,7 +41,9 @@ public class AuthFilter implements Filter {
 
                 // 토큰 검증
                 if (!jwtUtil.validateToken(token)) {
-                    throw new IllegalArgumentException("Token Error");
+                    ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+                    return;
+                    //throw new IllegalArgumentException("Token Error");
                 }
 
                 // 토큰에서 사용자 정보 가져오기
@@ -61,3 +63,36 @@ public class AuthFilter implements Filter {
     }
 
 }
+
+/*
+ To return a 401 Unauthorized HTTP status code from the AuthFilter in the given code snippet, you can modify it as follows:
+
+import jakarta.servlet.http.HttpServletResponse;
+
+// ...
+
+@Override
+public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException {
+    // ... existing code ...
+
+    if (tokenValue != null) {
+        // ... existing code ...
+
+        if (!jwtUtil.validateToken(token)) {
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+            return;
+        }
+
+        // ... existing code ...
+
+        chain.doFilter(request, response);
+    } else {
+        ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token not found");
+    }
+}
+
+In the updated code, I added checks for an invalid token inside the if (tokenValue != null) block. If the token is not valid, it will send a 401 Unauthorized response with the error message "Invalid token" using the sendError method of the HttpServletResponse.
+If no token is found, it will send a 401 Unauthorized response with the error message "Token not found".
+By returning the appropriate HTTP status code and error message, the client will receive a proper indication of the unauthorized access, allowing them to handle it accordingly.
+ */
