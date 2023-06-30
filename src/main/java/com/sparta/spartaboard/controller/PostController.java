@@ -8,6 +8,7 @@ import com.sparta.spartaboard.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class PostController {
 
     @Operation(summary = "게시글 작성")
     @PostMapping("/post")
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, HttpServletRequest req) {
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody @Valid PostRequestDto postRequestDto, HttpServletRequest req) {
         User user = (User) req.getAttribute("user");
         return postService.createPost(postRequestDto, user);
     }
@@ -42,7 +43,7 @@ public class PostController {
 
     @Operation(summary = "게시글 수정")
     @PutMapping("/post/{id}")
-    public ResponseEntity<PostResponseDto> editPost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto, HttpServletRequest req) {
+    public ResponseEntity<PostResponseDto> editPost(@PathVariable Long id, @RequestBody @Valid PostRequestDto postRequestDto, HttpServletRequest req) {
         User user = (User) req.getAttribute("user");
         return postService.editPost(id, postRequestDto, user);
     }
