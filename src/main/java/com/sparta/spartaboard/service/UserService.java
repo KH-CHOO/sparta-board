@@ -3,7 +3,7 @@ package com.sparta.spartaboard.service;
 import com.sparta.spartaboard.domain.dto.LoginRequestDto;
 import com.sparta.spartaboard.domain.dto.SignupRequestDto;
 import com.sparta.spartaboard.domain.entity.User;
-import com.sparta.spartaboard.domain.dto.UserResponseDto;
+import com.sparta.spartaboard.domain.dto.CommonResponseDto;
 import com.sparta.spartaboard.repository.UserRepository;
 import com.sparta.spartaboard.security.jwt.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public ResponseEntity<UserResponseDto> signup(SignupRequestDto signupRequestDto) {
+    public ResponseEntity<CommonResponseDto> signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
@@ -33,11 +33,11 @@ public class UserService {
         User user = new User(username, password);
         userRepository.save(user);
 
-        return ResponseEntity.status(201).body(new UserResponseDto(201, "회원가입이 완료되었습니다."));
+        return ResponseEntity.status(201).body(new CommonResponseDto(201, "회원가입이 완료되었습니다."));
     }
 
 
-    public ResponseEntity<UserResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse res) {
+    public ResponseEntity<CommonResponseDto> login(LoginRequestDto loginRequestDto, HttpServletResponse res) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -53,7 +53,7 @@ public class UserService {
         String token = jwtUtil.createToken(username);
         jwtUtil.addJwtToHeader(token, res);
 
-        return ResponseEntity.ok(new UserResponseDto(200, "로그인되었습니다."));
+        return ResponseEntity.ok(new CommonResponseDto(200, "로그인되었습니다."));
     }
 
 

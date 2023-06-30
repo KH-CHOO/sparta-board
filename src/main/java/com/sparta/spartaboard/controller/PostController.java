@@ -1,5 +1,6 @@
 package com.sparta.spartaboard.controller;
 
+import com.sparta.spartaboard.domain.dto.CommonResponseDto;
 import com.sparta.spartaboard.domain.dto.PostRequestDto;
 import com.sparta.spartaboard.domain.dto.PostResponseDto;
 import com.sparta.spartaboard.domain.entity.User;
@@ -41,7 +42,7 @@ public class PostController {
     }
 
     @DeleteMapping("/post/{id}")
-    public ResponseEntity<String> deletePost(@PathVariable Long id, HttpServletRequest req) {
+    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long id, HttpServletRequest req) {
         User user = (User) req.getAttribute("user");
         return postService.deletePost(id, user);
     }

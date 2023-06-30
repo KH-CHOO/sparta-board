@@ -1,5 +1,6 @@
 package com.sparta.spartaboard.service;
 
+import com.sparta.spartaboard.domain.dto.CommonResponseDto;
 import com.sparta.spartaboard.domain.dto.PostRequestDto;
 import com.sparta.spartaboard.domain.dto.PostResponseDto;
 import com.sparta.spartaboard.domain.entity.Post;
@@ -47,14 +48,14 @@ public class PostService {
         return ResponseEntity.ok(new PostResponseDto(post));
     }
 
-    public ResponseEntity<String> deletePost(Long id, User user) {
+    public ResponseEntity<CommonResponseDto> deletePost(Long id, User user) {
         Post post = findPost(id);
 
         checkUser(post.getUser().getUsername(), user.getUsername());
 
         postRepository.delete(post);
 
-        return ResponseEntity.ok("삭제가 완료되었습니다.");
+        return ResponseEntity.ok(new CommonResponseDto(200, "삭제가 완료되었습니다."));
     }
 
     private Post findPost(Long id) {
