@@ -1,4 +1,15 @@
 # 항해 블로그 백엔드 서버 만들기
+
+## ERD
+<a href="https://www.erdcloud.com/d/YytNSd2xG5X3TyWtz">Link</a>
+## API 명세서
+<a href="https://documenter.getpostman.com/view/24059545/2s93zB5MJm">Link</a>
+
+## 과제 제출용 노션
+https://www.notion.so/Lv-2-395fcf26be564d178d1458e5dc0e141a
+
+
+
 ## 구현 상황
 ### 회원 기능
 1. 회원 가입 API
@@ -30,7 +41,3 @@
     - 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 게시글만 삭제 가능
     - 선택한 게시글을 삭제하고 Client 로 성공했다는 메시지, 상태코드 반환하기
 
-## ERD
-<a href="https://www.erdcloud.com/d/YytNSd2xG5X3TyWtz">Link</a>
-## API 명세서
-<a href="https://documenter.getpostman.com/view/24059545/2s93zB5MJm">Link</a>
