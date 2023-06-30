@@ -16,7 +16,6 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 public class PostService {
-
     private final PostRepository postRepository;
 
     public ResponseEntity<List<PostResponseDto>> getPosts() {
@@ -41,9 +40,7 @@ public class PostService {
     public ResponseEntity<PostResponseDto> editPost(Long id, PostRequestDto postRequestDto, User user) {
         Post post = findPost(id);
 
-        if (!Objects.equals(post.getUser().getUsername(), user.getUsername())) {
-            throw new IllegalArgumentException("작성자가 일치하지 않습니다.");
-        }
+        checkUser(post.getUser().getUsername(), user.getUsername());
 
         post.update(postRequestDto);
 
@@ -53,9 +50,7 @@ public class PostService {
     public ResponseEntity<String> deletePost(Long id, User user) {
         Post post = findPost(id);
 
-        if (!Objects.equals(post.getUser().getUsername(), user.getUsername())) {
-            throw new IllegalArgumentException("작성자가 일치하지 않습니다.");
-        }
+        checkUser(post.getUser().getUsername(), user.getUsername());
 
         postRepository.delete(post);
 
@@ -66,5 +61,11 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("선택한 게시글은 존재하지 않습니다.")
         );
+    }
+
+    private void checkUser(String postUsername, String loginUsername) {
+        if (!Objects.equals(postUsername, loginUsername)) {
+            throw new IllegalArgumentException("작성자가 일치하지 않습니다.");
+        }
     }
 }

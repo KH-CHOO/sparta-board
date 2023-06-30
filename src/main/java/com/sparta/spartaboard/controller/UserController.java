@@ -1,6 +1,7 @@
 package com.sparta.spartaboard.controller;
 
-import com.sparta.spartaboard.domain.dto.UserRequestDto;
+import com.sparta.spartaboard.domain.dto.LoginRequestDto;
+import com.sparta.spartaboard.domain.dto.SignupRequestDto;
 import com.sparta.spartaboard.domain.dto.UserResponseDto;
 import com.sparta.spartaboard.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,14 +20,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto> signup(@RequestBody @Valid UserRequestDto userRequestDto, HttpServletResponse res) {
-        return userService.signup(userRequestDto, res);
+    public ResponseEntity<UserResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+        return userService.signup(signupRequestDto);
     }
+
     @PostMapping("/login")
-    public ResponseEntity<UserResponseDto> login(@RequestBody UserRequestDto userRequestDto, HttpServletResponse res) {
-        return userService.login(userRequestDto, res);
+    public ResponseEntity<UserResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse res) {
+        return userService.login(loginRequestDto, res);
     }
-
-
-
 }
