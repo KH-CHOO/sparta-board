@@ -20,6 +20,22 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
+    public ResponseEntity<UserResponseDto> signup(UserRequestDto userRequestDto, HttpServletResponse res) {
+        String username = userRequestDto.getUsername();
+        String password = passwordEncoder.encode(userRequestDto.getPassword());
+
+        Optional<User> checkUsername = userRepository.findById(username);
+        if (checkUsername.isPresent()) {
+            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+        }
+
+        User user = new User(username, password);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new UserResponseDto(200, "회원가입이 완료되었습니다."));
+    }
+
+
     public ResponseEntity<UserResponseDto> login(UserRequestDto userRequestDto, HttpServletResponse res) {
         String username = userRequestDto.getUsername();
         String password = userRequestDto.getPassword();
@@ -38,4 +54,6 @@ public class UserService {
 
         return ResponseEntity.ok(new UserResponseDto(200, "로그인되었습니다."));
     }
+
+
 }
