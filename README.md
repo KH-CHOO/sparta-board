@@ -8,9 +8,7 @@
 ## 과제 제출용 노션
 https://www.notion.so/Lv-2-395fcf26be564d178d1458e5dc0e141a
 
-
-
-## 구현 상황
+## 요구사항
 ### 회원 기능
 1. 회원 가입 API
     - username, password를 Client에서 전달받기
@@ -40,4 +38,3 @@ https://www.notion.so/Lv-2-395fcf26be564d178d1458e5dc0e141a
 5. 선택한 게시글 삭제 API
     - 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 게시글만 삭제 가능
     - 선택한 게시글을 삭제하고 Client 로 성공했다는 메시지, 상태코드 반환하기
-
