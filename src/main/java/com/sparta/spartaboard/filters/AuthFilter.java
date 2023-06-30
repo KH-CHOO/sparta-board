@@ -19,7 +19,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Order(1)
 public class AuthFilter implements Filter {
-
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
@@ -30,14 +29,14 @@ public class AuthFilter implements Filter {
         String method = httpServletRequest.getMethod();
 
         if (StringUtils.hasText(url) &&
-                (url.startsWith("/api/user") || url.equals("/api/posts") || (url.startsWith("/api/post") && method.equals("GET"))))
+                (url.startsWith("/swagger-ui") || url.startsWith("/v3/api-docs") || url.startsWith("/api/user") || url.equals("/api/posts") || (url.startsWith("/api/post") && method.equals("GET"))))
         {
             chain.doFilter(request, response);
         } else {
             // 토큰 확인
             String tokenValue = jwtUtil.getTokenFromRequestHeader(httpServletRequest);
 
-            if (StringUtils.hasText(tokenValue)) {
+            if (tokenValue != null) {
                 String token = jwtUtil.substringToken(tokenValue);
 
                 // 토큰 검증
@@ -55,7 +54,8 @@ public class AuthFilter implements Filter {
                 request.setAttribute("user", user);
                 chain.doFilter(request, response); // 다음 Filter 로 이동
             } else {
-                throw new IllegalArgumentException("Not Found Token");
+                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_BAD_REQUEST, "Not found token");
+//                throw new IllegalArgumentException("Not Found Token");
             }
         }
     }
